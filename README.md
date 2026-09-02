@@ -49,9 +49,15 @@ Vercel 정적 배포용 저장소. 루트가 그대로 서빙된다.
 커스텀 스킬 업로드는 **Pro 이상**이다. 무료 계정은 `SKILL.md` 본문을 프로젝트 지침에 붙여 쓴다.
 자세한 사용법은 [`skills/사용법.md`](skills/사용법.md).
 
-## teacher-pack — 클로드 코드용 플러그인
+## teacher-pack — 플러그인
 
-같은 스킬 10종을 하나로 묶었다. 여러 선생님께 나눠줄 때 쓴다.
+같은 스킬 10종을 하나로 묶었다. 플러그인은 **claude.ai 채팅에서도** 쓴다 (모든 유료 플랜).
+
+| 상황 | 방법 |
+|---|---|
+| 혼자 · Pro | claude.ai `Customize → Plugins → Personal plugins → +` → `gusrl0613/teach` |
+| 학교 배포 · Team/Enterprise 소유자 | `조직 설정 → 플러그인 → Upload a file` 에 `teacher-pack.zip` (50 MB 이하) |
+| 클로드 코드 | 아래 두 줄 |
 
 ```
 /plugin marketplace add gusrl0613/teach
