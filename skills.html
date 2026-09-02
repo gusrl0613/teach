@@ -1,7 +1,7 @@
 <title>교사를 위한 클로드 스킬 열 가지</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700&family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 
 <style>
 /* ─────────────────────────────────────────────
@@ -27,7 +27,8 @@
   --font-mono: 'IBM Plex Mono', 'D2Coding', Consolas, 'IBM Plex Sans KR', monospace;
 
   --wrap: 1120px;
-  --tab-h: 44px;
+  --gutter: clamp(18px, 4vw, 40px);
+  --tab-h: 42px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,31 +79,53 @@ body {
   padding: 0 clamp(18px, 4vw, 40px);
 }
 
-/* ── 탭 (교안 / 스킬 안내) ───────────────── */
+/* ── 탭 — 다섯 페이지 공통. 페이지 팔레트와 무관하게 같은 모양 ── */
 
 .tabs {
+  --tab-bg:        #EFEADD;
+  --tab-edge:      #DCD6C4;
+  --tab-fg:        #7B8E84;
+  --tab-fg-hover:  #1C332B;
+  --tab-on-bg:     #B8860F;
+  --tab-on-fg:     #FFFDF7;
+
   position: sticky; top: 0; z-index: 30;
   height: var(--tab-h);
   display: flex; align-items: stretch;
-  background: var(--paper);
-  border-bottom: 2px solid var(--ink);
-  margin: 0 calc(-1 * clamp(18px, 4vw, 40px));
-  padding: 0 clamp(18px, 4vw, 40px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--tab-bg);
+  border-bottom: 1px solid var(--tab-edge);
 }
+.tabs::-webkit-scrollbar { display: none; }
 .tabs a {
   display: flex; align-items: center;
-  padding: 0 clamp(14px, 2.2vw, 26px);
-  font-weight: 600; font-size: 14px;
-  letter-spacing: .05em;
-  color: var(--ink-3);
+  padding: 0 clamp(13px, 2vw, 28px);
+  font-family: 'Gothic A1', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(12px, .95vw, 15px);
+  letter-spacing: .06em;
+  color: var(--tab-fg);
   text-decoration: none;
-  border-right: 1px solid var(--rule-2);
+  border-right: 1px solid var(--tab-edge);
   white-space: nowrap;
+  flex: none;
 }
-.tabs a:first-child { border-left: 1px solid var(--rule-2); }
-.tabs a:hover { color: var(--ink); }
-.tabs a:focus-visible { outline: 2px solid var(--ink); outline-offset: -3px; }
-.tabs a[aria-current="page"] { color: var(--on-ink); background: var(--ink); }
+.tabs a:first-child { border-left: 1px solid var(--tab-edge); }
+.tabs a:hover { color: var(--tab-fg-hover); }
+.tabs a:focus-visible { outline: 2px solid var(--tab-on-bg); outline-offset: -3px; }
+.tabs a[aria-current="page"] { color: var(--tab-on-fg); background: var(--tab-on-bg); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tabs {
+    --tab-bg: #1B2E27; --tab-edge: #2A423A; --tab-fg: #7C9187;
+    --tab-fg-hover: #EDE7D8; --tab-on-bg: #F0C75A; --tab-on-fg: #14231D;
+  }
+}
+:root[data-theme="dark"] .tabs {
+  --tab-bg: #1B2E27; --tab-edge: #2A423A; --tab-fg: #7C9187;
+  --tab-fg-hover: #EDE7D8; --tab-on-bg: #F0C75A; --tab-on-fg: #14231D;
+}
 
 /* ── 머리 ────────────────────────────────── */
 
@@ -443,12 +466,17 @@ kbd {
 }
 </style>
 
-<div class="wrap">
-
 <nav class="tabs" aria-label="자료 이동">
   <a href="index.html" data-alt="https://claude.ai/code/artifact/fb48863d-e38e-4783-aad9-47f93dd2578f">교안</a>
-  <a href="skills.html" aria-current="page">스킬 안내</a>
+  <a href="skills.html" aria-current="page">스킬</a>
+  <a href="cowork.html" data-alt="https://claude.ai/code/artifact/072bd0e5-21ba-417d-9e0f-8bd1033bc9c7">코워크</a>
+  <a href="plugins.html" data-alt="https://claude.ai/code/artifact/d4369973-5b68-413e-a4b0-18f011953042">플러그인</a>
+  <a href="connectors.html" data-alt="https://claude.ai/code/artifact/f9f02e0d-f4bb-450f-b48e-40ef220c0d55">커넥터</a>
 </nav>
+
+<div class="wrap">
+
+
 
 <header>
   <p class="eyebrow">claude.ai · 초등학교 교사용</p>

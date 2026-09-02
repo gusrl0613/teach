@@ -1,0 +1,448 @@
+<title>코워크 — 시켜놓고 딴 일 하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700&family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+
+<style>
+:root {
+  --paper:    #F7F6F2;
+  --surface:  #FFFFFF;
+  --raised:   #FDFCF9;
+  --ink:      #1A2B4A;
+  --ink-2:    #52627E;
+  --ink-3:    #8A96A8;
+  --red-pen:  #A82F22;
+  --red-soft: #F3E4E1;
+  --rule:     #DCD8CE;
+  --rule-2:   #EBE8E0;
+  --on-ink:   #F7F6F2;
+
+  --font-display: 'Gowun Batang', 'Nanum Myeongjo', Georgia, serif;
+  --font-body: 'IBM Plex Sans KR', system-ui, -apple-system, 'Malgun Gothic', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'D2Coding', Consolas, 'IBM Plex Sans KR', monospace;
+
+  --wrap: 1120px;
+  --gutter: clamp(18px, 4vw, 40px);
+  --tab-h: 42px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F1621; --surface: #16202E; --raised: #1B2635;
+    --ink: #DCE4F0; --ink-2: #9DAABF; --ink-3: #6D7A8E;
+    --red-pen: #EE8878; --red-soft: #2E1D1B;
+    --rule: #2C3849; --rule-2: #202B3A; --on-ink: #0F1621;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F1621; --surface: #16202E; --raised: #1B2635;
+  --ink: #DCE4F0; --ink-2: #9DAABF; --ink-3: #6D7A8E;
+  --red-pen: #EE8878; --red-soft: #2E1D1B;
+  --rule: #2C3849; --rule-2: #202B3A; --on-ink: #0F1621;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+header { border-bottom: 2px solid var(--ink); padding: clamp(30px, 5vw, 56px) 0 clamp(20px, 3vw, 30px); }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .14em; color: var(--ink-2); margin: 0 0 .9em; }
+h1 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(30px, 5vw, 54px); line-height: 1.15;
+  letter-spacing: -.01em; margin: 0 0 .3em; text-wrap: balance;
+}
+.sub { font-size: clamp(16px, 1.6vw, 20px); color: var(--ink-2); max-width: 42em; margin: 0; }
+.sub b { color: var(--ink); font-weight: 600; }
+
+section { padding: clamp(32px, 5vw, 56px) 0; border-bottom: 1px solid var(--rule-2); }
+h2 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(21px, 2.4vw, 29px); margin: 0 0 .1em; letter-spacing: -.005em;
+}
+.h2note { color: var(--ink-2); font-size: 15px; margin: 0 0 1.4em; }
+h3 { font-family: var(--font-display); font-weight: 700; font-size: 19px; margin: 0 0 .6em; }
+p { margin: 0 0 .85em; }
+b, strong { font-weight: 600; color: var(--ink); }
+code {
+  font-family: var(--font-mono); font-size: .89em;
+  background: var(--raised); border: 1px solid var(--rule-2);
+  padding: .08em .35em; border-radius: 2px;
+}
+a { color: var(--ink); }
+
+.lead { font-size: clamp(18px, 2vw, 26px); font-weight: 600; line-height: 1.5; max-width: 24em; text-wrap: balance; }
+mark { background: linear-gradient(transparent 58%, rgba(184,134,15,.34) 58%); color: inherit; padding: 0 .06em; }
+
+.grid { display: grid; gap: clamp(13px, 1.6vw, 22px); }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 235px), 1fr)); }
+
+.card {
+  background: var(--surface); border: 1px solid var(--rule);
+  border-top: 3px solid var(--ink); border-radius: 3px;
+  padding: clamp(15px, 1.7vw, 24px);
+}
+.card .k { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: .4em; }
+.card .v { color: var(--ink-2); font-size: 15px; }
+.card .v b { color: var(--ink); }
+
+.tw { overflow-x: auto; margin: .2em 0 .5em; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: .55em .8em; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
+th {
+  font-size: 12px; letter-spacing: .1em; color: var(--ink-3);
+  font-weight: 600; border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+tr:last-child td { border-bottom: none; }
+.yes { color: #2E7A6E; font-weight: 700; }
+.no { color: var(--red-pen); font-weight: 700; }
+
+.steps { display: grid; gap: clamp(12px, 1.6vw, 20px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.step { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 17px 19px; }
+.step .n {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  color: var(--ink-3); letter-spacing: .1em; display: block; margin-bottom: .6em;
+}
+.step p { margin: 0; font-size: 15px; }
+
+/* 빨간펜 — 조심할 것 */
+.warn {
+  border-left: 3px solid var(--red-pen); background: var(--red-soft);
+  padding: 13px 17px; border-radius: 0 3px 3px 0; font-size: 15px;
+  margin: 1em 0 0;
+}
+.warn b { color: var(--red-pen); }
+.warn h3 { color: var(--red-pen); font-size: 17px; margin-bottom: .45em; }
+.warn ul { margin: 0; padding-left: 1.1em; }
+.warn li { margin-bottom: .28em; color: var(--ink-2); }
+.warn li b { color: var(--ink); }
+
+.note { border-left: 3px solid var(--rule); padding: .3em 0 .3em 1em; color: var(--ink-2); font-size: 15px; margin: .8em 0 0; }
+.kicker { font-weight: 600; color: var(--ink); font-size: 16px; }
+
+/* 복사되는 프롬프트 */
+.prompt {
+  position: relative; display: block; width: 100%; text-align: left;
+  font-family: var(--font-mono); font-size: 13.5px; line-height: 1.65;
+  white-space: pre-wrap; word-break: break-word;
+  background: var(--raised); color: var(--ink);
+  border: 1px dashed var(--rule); border-left: 3px solid var(--ink-2);
+  border-radius: 3px; padding: 13px 16px; padding-right: 62px;
+  margin: .4em 0 .7em; cursor: copy;
+}
+.prompt:hover, .prompt:focus-visible { border-color: var(--ink); background: var(--surface); }
+.prompt:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.prompt::after {
+  content: "복사"; position: absolute; top: 9px; right: 10px;
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  letter-spacing: .08em; color: var(--ink-3);
+  border: 1px solid var(--rule); border-radius: 2px; padding: 2px 7px; background: var(--paper);
+}
+.prompt.copied::after { content: "복사됨"; background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+
+ol, ul { margin: 0 0 .9em; padding-left: 1.25em; }
+li { margin-bottom: .4em; }
+.mut { color: var(--ink-2); font-size: 14px; }
+
+kbd {
+  font-family: var(--font-mono); font-size: .85em;
+  border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 3px;
+  padding: .1em .4em; background: var(--surface); color: var(--ink);
+}
+
+footer { padding: clamp(30px, 5vw, 52px) 0 clamp(46px, 7vw, 76px); }
+.sign {
+  margin-top: clamp(26px, 4vw, 42px); padding-top: 18px;
+  border-top: 1px solid var(--rule); font-size: 14px; color: var(--ink-3);
+  display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+@media print {
+  body { background: #fff; }
+  .tabs { display: none !important; }
+  .card, .step, .warn { break-inside: avoid; }
+  .prompt::after { display: none; }
+}
+
+/* ── 탭 — 다섯 페이지 공통. 페이지 팔레트와 무관하게 같은 모양 ── */
+
+.tabs {
+  --tab-bg:        #EFEADD;
+  --tab-edge:      #DCD6C4;
+  --tab-fg:        #7B8E84;
+  --tab-fg-hover:  #1C332B;
+  --tab-on-bg:     #B8860F;
+  --tab-on-fg:     #FFFDF7;
+
+  position: sticky; top: 0; z-index: 30;
+  height: var(--tab-h);
+  display: flex; align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--tab-bg);
+  border-bottom: 1px solid var(--tab-edge);
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a {
+  display: flex; align-items: center;
+  padding: 0 clamp(13px, 2vw, 28px);
+  font-family: 'Gothic A1', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(12px, .95vw, 15px);
+  letter-spacing: .06em;
+  color: var(--tab-fg);
+  text-decoration: none;
+  border-right: 1px solid var(--tab-edge);
+  white-space: nowrap;
+  flex: none;
+}
+.tabs a:first-child { border-left: 1px solid var(--tab-edge); }
+.tabs a:hover { color: var(--tab-fg-hover); }
+.tabs a:focus-visible { outline: 2px solid var(--tab-on-bg); outline-offset: -3px; }
+.tabs a[aria-current="page"] { color: var(--tab-on-fg); background: var(--tab-on-bg); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tabs {
+    --tab-bg: #1B2E27; --tab-edge: #2A423A; --tab-fg: #7C9187;
+    --tab-fg-hover: #EDE7D8; --tab-on-bg: #F0C75A; --tab-on-fg: #14231D;
+  }
+}
+:root[data-theme="dark"] .tabs {
+  --tab-bg: #1B2E27; --tab-edge: #2A423A; --tab-fg: #7C9187;
+  --tab-fg-hover: #EDE7D8; --tab-on-bg: #F0C75A; --tab-on-fg: #14231D;
+}</style>
+
+<nav class="tabs" aria-label="자료 이동">
+  <a href="index.html" data-alt="https://claude.ai/code/artifact/fb48863d-e38e-4783-aad9-47f93dd2578f">교안</a>
+  <a href="skills.html" data-alt="https://claude.ai/code/artifact/c802d102-d142-4d1b-8ca8-ba2b965a2b50">스킬</a>
+  <a href="cowork.html" aria-current="page">코워크</a>
+  <a href="plugins.html" data-alt="https://claude.ai/code/artifact/d4369973-5b68-413e-a4b0-18f011953042">플러그인</a>
+  <a href="connectors.html" data-alt="https://claude.ai/code/artifact/f9f02e0d-f4bb-450f-b48e-40ef220c0d55">커넥터</a>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">claude.ai · 초등학교 교사용</p>
+  <h1>코워크 — 시켜놓고<br>딴 일 하기</h1>
+  <p class="sub">채팅은 <b>물어보고 답을 받는</b> 것입니다.
+    코워크는 <b>일을 맡겨두고 자리를 뜨는</b> 것입니다.
+    앤트로픽이 <b>비개발자를 위해</b> 만들었습니다.</p>
+</header>
+
+<section>
+  <h2>한 문장으로</h2>
+  <p class="lead">코워크는 <mark>클로드가 내 컴퓨터에서 혼자 일하는 모드</mark>입니다.</p>
+  <p>클로드 데스크탑 앱 안의 탭 하나입니다. 새로 설치할 프로그램이 아닙니다.
+    그 안에서 클로드는 <b>내 파일과 폴더를 직접 읽고</b>, 여러 단계짜리 일을 <b>혼자 끝까지</b> 하고,
+    다 되면 결과물을 내놓습니다.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th></th><th>채팅 (지금까지)</th><th>코워크</th></tr></thead>
+      <tbody>
+        <tr><td><b>내가 하는 일</b></td><td>한 번 묻고, 답 보고, 또 묻고</td><td>한 번 시키고 <b>자리를 뜬다</b></td></tr>
+        <tr><td><b>파일</b></td><td>하나씩 올려야 본다</td><td><b>폴더째</b> 본다</td></tr>
+        <tr><td><b>걸리는 시간</b></td><td>내가 기다리는 동안만</td><td>몇 십 분도 <b>혼자 돈다</b></td></tr>
+        <tr><td><b>내 기기</b></td><td>켜져 있어야 한다</td><td>꺼도 <b>계속 돈다</b></td></tr>
+        <tr><td><b>결과</b></td><td>대화 속 글자</td><td><b>정리된 파일</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">연수에서 다룬 <b>다섯 단계</b> 기억하시나요. 코워크는 <b>4단계와 5단계 사이</b>입니다 —
+    클로드 코드처럼 내 컴퓨터를 만지지만, 검은 창(터미널)이 없습니다.</p>
+</section>
+
+<section>
+  <h2>쓸 수 있나요</h2>
+  <p class="h2note">먼저 이것부터 확인하셔야 합니다.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>어디서</th><th>어떤 플랜</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><b>데스크탑 앱</b> (맥 · 윈도)</td><td>Pro · Max · Team · Enterprise</td><td class="yes">가장 넓게 됩니다</td></tr>
+        <tr><td><b>웹</b> claude.ai</td><td>Pro · Max · Team <span class="mut">(베타)</span></td><td class="yes">됩니다</td></tr>
+        <tr><td><b>모바일</b> 앱</td><td>Pro · Max · Team <span class="mut">(베타)</span></td><td class="yes">됩니다</td></tr>
+        <tr><td><b>무료 플랜</b></td><td>—</td><td class="no">안 됩니다</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="kicker">코워크는 <b>유료 전용</b>입니다. 무료 계정에는 아예 안 보입니다.</p>
+  <p class="note">2026년 4월 9일 정식 출시, 8월에 모바일까지 확대됐습니다.
+    데스크탑 앱이 가장 안정적이고 할 수 있는 일도 많습니다. <b>처음이시면 데스크탑으로 시작하세요.</b></p>
+</section>
+
+<section>
+  <h2>시작하기</h2>
+  <p class="h2note">설치할 게 하나뿐입니다.</p>
+  <div class="steps">
+    <div class="step"><span class="n">STEP 1</span>
+      <p><b>클로드 데스크탑 앱</b>을 내려받아 설치합니다.
+        <span class="mut">claude.ai 에서 Download 로 들어가면 맥·윈도용이 있습니다</span></p></div>
+    <div class="step"><span class="n">STEP 2</span>
+      <p>앱을 열고 로그인하면 위쪽에 <b>Cowork 탭</b>이 보입니다. 그걸 누릅니다</p></div>
+    <div class="step"><span class="n">STEP 3</span>
+      <p><b>프로젝트를 하나 만듭니다.</b> 코워크는 프로젝트 단위로 움직입니다 —
+        일감·파일·지침이 한 곳에 묶입니다</p></div>
+    <div class="step"><span class="n">STEP 4</span>
+      <p>그 프로젝트에 <b>작업할 폴더를 지정</b>하고, 하고 싶은 일을 말로 적습니다</p></div>
+  </div>
+  <p class="note"><b>프로젝트</b>라는 말이 채팅의 프로젝트와 같습니다. 배경 설명과 파일을 한 번 넣어두는 곳이고,
+    코워크에서는 여기에 <b>작업 폴더</b>가 더 붙습니다.</p>
+</section>
+
+<section>
+  <h2>교사에게 이런 게 됩니다</h2>
+  <p class="h2note">전부 “폴더를 통째로 다루는 일”입니다. 채팅으로는 파일을 하나씩 올려야 해서 안 하게 되는 것들입니다.</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="k">흩어진 학습지 정리</div>
+      <div class="v">다운로드 폴더에 이름이 제각각인 파일 수십 개.
+        <b>학년·과목·단원별로 폴더를 나누고 이름을 통일</b>합니다.</div>
+    </div>
+    <div class="card">
+      <div class="k">여러 문서를 한 표로</div>
+      <div class="v">학년 회의록 열두 개를 전부 읽고
+        <b>결정사항만 뽑아 한 장으로</b> 만듭니다.</div>
+    </div>
+    <div class="card">
+      <div class="k">자료 찾아 정리</div>
+      <div class="v">웹을 직접 돌아다니며 자료를 모으고
+        <b>출처와 함께 표로</b> 정리합니다.</div>
+    </div>
+    <div class="card">
+      <div class="k">양식 일괄 적용</div>
+      <div class="v">작년 통신문 형식에 맞춰
+        <b>올해 것 여러 장을 한꺼번에</b> 고칩니다.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1.4em">이렇게 시켜보세요</h3>
+  <div class="prompt">이 폴더에 있는 학습지 파일들 좀 정리해줘.
+
+- 파일 이름을 '학년_과목_단원_자료명' 형식으로 통일
+- 학년별로 폴더를 나눠서 옮겨줘
+- 어떤 파일이 어디로 갔는지 목록을 표로 만들어줘
+
+지우지는 말고, 옮기기 전에 뭘 할 건지 먼저 알려줘.</div>
+  <p class="note"><b>“먼저 알려줘”를 꼭 붙이세요.</b> 코워크는 실제로 파일을 옮깁니다.
+    무엇을 할지 확인한 뒤에 시키는 습관이 안전합니다.</p>
+
+  <div class="prompt">이 폴더의 학년 회의록 파일을 전부 읽고,
+결정된 사항만 뽑아서 표로 정리해줘.
+
+열: 날짜 / 안건 / 결정 / 담당 / 기한
+결정이 안 난 안건은 '보류'로 표시해줘.
+정리한 표를 엑셀 파일로 만들어줘.</div>
+</section>
+
+<section>
+  <h2>조심할 것</h2>
+  <p class="h2note">코워크는 스스로 움직입니다. 채팅보다 조심할 게 늘어납니다.</p>
+
+  <div class="warn">
+    <h3>내 파일을 실제로 만집니다</h3>
+    <ul>
+      <li><b>중요한 폴더를 처음부터 열지 마세요.</b> 복사본을 만들어 그 폴더로 먼저 연습하세요</li>
+      <li>파일을 <b>옮기거나 이름을 바꾸기 전에 알려달라</b>고 지시에 적어두세요</li>
+      <li>클로드가 <b>허락을 물어보면 읽고 답하세요.</b> 습관적으로 승인하지 마세요</li>
+    </ul>
+  </div>
+
+  <div class="warn">
+    <h3>학생 개인정보는 그대로입니다</h3>
+    <ul>
+      <li>폴더를 열어준다는 건 <b>그 안의 모든 파일을 보여준다</b>는 뜻입니다</li>
+      <li>실명 명렬표·생기부 파일이 든 폴더는 <b>열지 마세요</b></li>
+      <li>연수에서 배운 원칙 그대로입니다 — <b>번호로 바꾸면 결과는 같고 위험만 사라집니다</b></li>
+    </ul>
+  </div>
+
+  <div class="warn">
+    <h3>웹에서 읽은 내용에 속을 수 있습니다</h3>
+    <ul>
+      <li>코워크는 웹을 직접 돌아다닙니다. 그러다 <b>악의적으로 심어둔 지시문</b>을 읽고 따를 수 있습니다</li>
+      <li>모르는 사이트를 뒤지게 하는 일은 <b>중요한 폴더가 열려 있지 않을 때</b> 하세요</li>
+    </ul>
+  </div>
+
+  <p class="note">데스크탑에서 한 대화는 <b>내 컴퓨터에 저장</b>됩니다. 학교 공용 PC에서는 쓰지 마세요.</p>
+</section>
+
+<section>
+  <h2>그래서 언제 쓰나</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>이럴 땐</th><th>이걸로</th></tr></thead>
+      <tbody>
+        <tr><td>문장 하나 다듬기, 통신문 초안</td><td><b>채팅</b> — 코워크는 과합니다</td></tr>
+        <tr><td>같은 일을 매번 같은 방식으로</td><td><b>스킬</b> — 절차를 파일로 적어둡니다</td></tr>
+        <tr><td>파일이 여러 개, 폴더째 다뤄야 할 때</td><td><b>코워크</b></td></tr>
+        <tr><td>오래 걸리는 일을 맡기고 퇴근</td><td><b>코워크</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="kicker">채팅으로 충분한 일에 코워크를 쓰면 오히려 느립니다. <b>파일이 여러 개일 때</b>가 신호입니다.</p>
+</section>
+
+<footer>
+  <h2>처음이시면</h2>
+  <p>데스크탑 앱을 깔고, <b>연습용 폴더를 하나 만들어</b> 그 안에 파일 몇 개를 복사해 두세요.
+    그 폴더로 위의 “학습지 정리”를 한 번 돌려보시면 감이 옵니다. 10분이면 됩니다.</p>
+  <p class="note">막히시면 연락 주세요. 혼자 하다 막히면 그냥 안 하게 됩니다.</p>
+  <p class="sign"><span>회색 상자는 클릭하면 복사됩니다</span><span>2026년 9월 기준 · 공식 문서 확인</span></p>
+</footer>
+
+</div>
+<script>
+(function () {
+  /* 프롬프트 클릭 복사 */
+  function fallback(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:-2000px;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function copy(el) {
+    var text = el.textContent;
+    var done = function () {
+      el.classList.add('copied');
+      setTimeout(function () { el.classList.remove('copied'); }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(text, done); });
+    } else { fallback(text, done); }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.prompt'), function (el) {
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('title', '클릭하면 복사됩니다');
+    el.addEventListener('click', function () { copy(el); });
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(el); }
+    });
+  });
+
+  /* 탭 — 형제 파일이 없는 곳(아티팩트)에서는 절대 주소로 */
+  if (location.protocol === 'file:') return;
+  var alts = Array.prototype.slice.call(document.querySelectorAll('.tabs a[data-alt]'));
+  if (!alts.length) return;
+  var swap = function () {
+    alts.forEach(function (a) { a.setAttribute('href', a.getAttribute('data-alt')); });
+  };
+  try {
+    fetch(alts[0].getAttribute('href'), { method: 'HEAD' })
+      .then(function (r) { if (!r.ok) swap(); }, swap);
+  } catch (e) { swap(); }
+})();
+</script>

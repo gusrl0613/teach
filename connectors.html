@@ -1,0 +1,423 @@
+<title>커넥터 — 내 도구에 손을 뻗다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700&family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+
+<style>
+:root {
+  --paper:    #F7F6F2;
+  --surface:  #FFFFFF;
+  --raised:   #FDFCF9;
+  --ink:      #1A2B4A;
+  --ink-2:    #52627E;
+  --ink-3:    #8A96A8;
+  --red-pen:  #A82F22;
+  --red-soft: #F3E4E1;
+  --rule:     #DCD8CE;
+  --rule-2:   #EBE8E0;
+  --on-ink:   #F7F6F2;
+
+  --font-display: 'Gowun Batang', 'Nanum Myeongjo', Georgia, serif;
+  --font-body: 'IBM Plex Sans KR', system-ui, -apple-system, 'Malgun Gothic', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'D2Coding', Consolas, 'IBM Plex Sans KR', monospace;
+
+  --wrap: 1120px;
+  --gutter: clamp(18px, 4vw, 40px);
+  --tab-h: 42px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F1621; --surface: #16202E; --raised: #1B2635;
+    --ink: #DCE4F0; --ink-2: #9DAABF; --ink-3: #6D7A8E;
+    --red-pen: #EE8878; --red-soft: #2E1D1B;
+    --rule: #2C3849; --rule-2: #202B3A; --on-ink: #0F1621;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F1621; --surface: #16202E; --raised: #1B2635;
+  --ink: #DCE4F0; --ink-2: #9DAABF; --ink-3: #6D7A8E;
+  --red-pen: #EE8878; --red-soft: #2E1D1B;
+  --rule: #2C3849; --rule-2: #202B3A; --on-ink: #0F1621;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+header { border-bottom: 2px solid var(--ink); padding: clamp(30px, 5vw, 56px) 0 clamp(20px, 3vw, 30px); }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .14em; color: var(--ink-2); margin: 0 0 .9em; }
+h1 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(30px, 5vw, 54px); line-height: 1.15;
+  letter-spacing: -.01em; margin: 0 0 .3em; text-wrap: balance;
+}
+.sub { font-size: clamp(16px, 1.6vw, 20px); color: var(--ink-2); max-width: 42em; margin: 0; }
+.sub b { color: var(--ink); font-weight: 600; }
+
+section { padding: clamp(32px, 5vw, 56px) 0; border-bottom: 1px solid var(--rule-2); }
+h2 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(21px, 2.4vw, 29px); margin: 0 0 .1em; letter-spacing: -.005em;
+}
+.h2note { color: var(--ink-2); font-size: 15px; margin: 0 0 1.4em; }
+h3 { font-family: var(--font-display); font-weight: 700; font-size: 19px; margin: 0 0 .6em; }
+p { margin: 0 0 .85em; }
+b, strong { font-weight: 600; color: var(--ink); }
+code {
+  font-family: var(--font-mono); font-size: .89em;
+  background: var(--raised); border: 1px solid var(--rule-2);
+  padding: .08em .35em; border-radius: 2px;
+}
+a { color: var(--ink); }
+
+.lead { font-size: clamp(18px, 2vw, 26px); font-weight: 600; line-height: 1.5; max-width: 24em; text-wrap: balance; }
+mark { background: linear-gradient(transparent 58%, rgba(184,134,15,.34) 58%); color: inherit; padding: 0 .06em; }
+
+.grid { display: grid; gap: clamp(13px, 1.6vw, 22px); }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 235px), 1fr)); }
+
+.card {
+  background: var(--surface); border: 1px solid var(--rule);
+  border-top: 3px solid var(--ink); border-radius: 3px;
+  padding: clamp(15px, 1.7vw, 24px);
+}
+.card .k { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: .4em; }
+.card .v { color: var(--ink-2); font-size: 15px; }
+.card .v b { color: var(--ink); }
+
+.tw { overflow-x: auto; margin: .2em 0 .5em; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: .55em .8em; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
+th {
+  font-size: 12px; letter-spacing: .1em; color: var(--ink-3);
+  font-weight: 600; border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+tr:last-child td { border-bottom: none; }
+.yes { color: #2E7A6E; font-weight: 700; }
+.no { color: var(--red-pen); font-weight: 700; }
+
+.steps { display: grid; gap: clamp(12px, 1.6vw, 20px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.step { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 17px 19px; }
+.step .n {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  color: var(--ink-3); letter-spacing: .1em; display: block; margin-bottom: .6em;
+}
+.step p { margin: 0; font-size: 15px; }
+
+/* 빨간펜 — 조심할 것 */
+.warn {
+  border-left: 3px solid var(--red-pen); background: var(--red-soft);
+  padding: 13px 17px; border-radius: 0 3px 3px 0; font-size: 15px;
+  margin: 1em 0 0;
+}
+.warn b { color: var(--red-pen); }
+.warn h3 { color: var(--red-pen); font-size: 17px; margin-bottom: .45em; }
+.warn ul { margin: 0; padding-left: 1.1em; }
+.warn li { margin-bottom: .28em; color: var(--ink-2); }
+.warn li b { color: var(--ink); }
+
+.note { border-left: 3px solid var(--rule); padding: .3em 0 .3em 1em; color: var(--ink-2); font-size: 15px; margin: .8em 0 0; }
+.kicker { font-weight: 600; color: var(--ink); font-size: 16px; }
+
+/* 복사되는 프롬프트 */
+.prompt {
+  position: relative; display: block; width: 100%; text-align: left;
+  font-family: var(--font-mono); font-size: 13.5px; line-height: 1.65;
+  white-space: pre-wrap; word-break: break-word;
+  background: var(--raised); color: var(--ink);
+  border: 1px dashed var(--rule); border-left: 3px solid var(--ink-2);
+  border-radius: 3px; padding: 13px 16px; padding-right: 62px;
+  margin: .4em 0 .7em; cursor: copy;
+}
+.prompt:hover, .prompt:focus-visible { border-color: var(--ink); background: var(--surface); }
+.prompt:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.prompt::after {
+  content: "복사"; position: absolute; top: 9px; right: 10px;
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  letter-spacing: .08em; color: var(--ink-3);
+  border: 1px solid var(--rule); border-radius: 2px; padding: 2px 7px; background: var(--paper);
+}
+.prompt.copied::after { content: "복사됨"; background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+
+ol, ul { margin: 0 0 .9em; padding-left: 1.25em; }
+li { margin-bottom: .4em; }
+.mut { color: var(--ink-2); font-size: 14px; }
+
+kbd {
+  font-family: var(--font-mono); font-size: .85em;
+  border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 3px;
+  padding: .1em .4em; background: var(--surface); color: var(--ink);
+}
+
+footer { padding: clamp(30px, 5vw, 52px) 0 clamp(46px, 7vw, 76px); }
+.sign {
+  margin-top: clamp(26px, 4vw, 42px); padding-top: 18px;
+  border-top: 1px solid var(--rule); font-size: 14px; color: var(--ink-3);
+  display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+@media print {
+  body { background: #fff; }
+  .tabs { display: none !important; }
+  .card, .step, .warn { break-inside: avoid; }
+  .prompt::after { display: none; }
+}
+
+/* ── 탭 — 다섯 페이지 공통. 페이지 팔레트와 무관하게 같은 모양 ── */
+
+.tabs {
+  --tab-bg:        #EFEADD;
+  --tab-edge:      #DCD6C4;
+  --tab-fg:        #7B8E84;
+  --tab-fg-hover:  #1C332B;
+  --tab-on-bg:     #B8860F;
+  --tab-on-fg:     #FFFDF7;
+
+  position: sticky; top: 0; z-index: 30;
+  height: var(--tab-h);
+  display: flex; align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--tab-bg);
+  border-bottom: 1px solid var(--tab-edge);
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a {
+  display: flex; align-items: center;
+  padding: 0 clamp(13px, 2vw, 28px);
+  font-family: 'Gothic A1', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(12px, .95vw, 15px);
+  letter-spacing: .06em;
+  color: var(--tab-fg);
+  text-decoration: none;
+  border-right: 1px solid var(--tab-edge);
+  white-space: nowrap;
+  flex: none;
+}
+.tabs a:first-child { border-left: 1px solid var(--tab-edge); }
+.tabs a:hover { color: var(--tab-fg-hover); }
+.tabs a:focus-visible { outline: 2px solid var(--tab-on-bg); outline-offset: -3px; }
+.tabs a[aria-current="page"] { color: var(--tab-on-fg); background: var(--tab-on-bg); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tabs {
+    --tab-bg: #1B2E27; --tab-edge: #2A423A; --tab-fg: #7C9187;
+    --tab-fg-hover: #EDE7D8; --tab-on-bg: #F0C75A; --tab-on-fg: #14231D;
+  }
+}
+:root[data-theme="dark"] .tabs {
+  --tab-bg: #1B2E27; --tab-edge: #2A423A; --tab-fg: #7C9187;
+  --tab-fg-hover: #EDE7D8; --tab-on-bg: #F0C75A; --tab-on-fg: #14231D;
+}</style>
+
+<nav class="tabs" aria-label="자료 이동">
+  <a href="index.html" data-alt="https://claude.ai/code/artifact/fb48863d-e38e-4783-aad9-47f93dd2578f">교안</a>
+  <a href="skills.html" data-alt="https://claude.ai/code/artifact/c802d102-d142-4d1b-8ca8-ba2b965a2b50">스킬</a>
+  <a href="cowork.html" data-alt="https://claude.ai/code/artifact/072bd0e5-21ba-417d-9e0f-8bd1033bc9c7">코워크</a>
+  <a href="plugins.html" data-alt="https://claude.ai/code/artifact/d4369973-5b68-413e-a4b0-18f011953042">플러그인</a>
+  <a href="connectors.html" aria-current="page">커넥터</a>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">claude.ai · 초등학교 교사용</p>
+  <h1>커넥터 — 클로드가<br>내 도구에 손을 뻗다</h1>
+  <p class="sub">파일을 올리지 않아도 됩니다.
+    <b>클로드가 내 드라이브와 캘린더를 직접 열어봅니다.</b></p>
+</header>
+
+<section>
+  <h2>한 문장으로</h2>
+  <p class="lead">커넥터는 <mark>클로드에게 내 도구의 열쇠를 주는 것</mark>입니다.</p>
+  <p>지금까지는 자료를 <b>복사해서 붙여넣거나 파일로 올렸습니다.</b>
+    커넥터를 연결하면 그 단계가 사라집니다 — “내 드라이브에서 지난주 회의록 찾아줘”라고 하면 클로드가 직접 찾습니다.</p>
+  <p class="note"><b>MCP</b>라는 말을 보신 적 있으실 겁니다. 커넥터를 움직이는 기술 표준의 이름입니다.
+    <b>외우실 필요 없습니다.</b> 화면에 보이는 이름은 언제나 “커넥터”입니다.</p>
+</section>
+
+<section>
+  <h2>연결하는 법</h2>
+  <p class="h2note">두 갈래 중 편한 쪽으로 가시면 됩니다.</p>
+  <div class="grid g2">
+    <div class="card">
+      <div class="k">대화창에서</div>
+      <div class="v">입력창 왼쪽 아래 <b>＋</b> 클릭 → <b>커넥터</b>에 마우스 올리기 →
+        <b>커넥터 관리</b> → 목록 옆 <b>＋</b></div>
+    </div>
+    <div class="card">
+      <div class="k">설정에서</div>
+      <div class="v"><b>Customize(내 설정) → Connectors(커넥터)</b> → 목록 옆 <b>＋</b></div>
+    </div>
+  </div>
+  <p style="margin-top:1.1em">연결을 누르면 <b>그 서비스의 로그인 화면</b>이 뜹니다.
+    로그인하면 <b>무엇을 허용할지 고르는 화면</b>이 나옵니다. 여기가 중요합니다 — 아래 “권한” 항목을 보세요.</p>
+  <p class="kicker">웹 커넥터는 <b>무료 플랜에서도 됩니다.</b> 직접 만든 커스텀 커넥터만 무료에서 1개로 제한됩니다.</p>
+</section>
+
+<section>
+  <h2>교사에게 필수인 네 가지</h2>
+  <p class="h2note">이 네 개면 대부분 해결됩니다. 하나씩 붙여보세요.</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="k">Google Drive</div>
+      <div class="v">문서·스프레드시트·슬라이드를 <b>검색하고 읽습니다.</b>
+        학교 자료가 드라이브에 있다면 <b>이게 가장 먼저</b>입니다.</div>
+    </div>
+    <div class="card">
+      <div class="k">Gmail</div>
+      <div class="v">메일을 <b>검색하고 읽고, 초안을 씁니다.</b>
+        학부모·동료 메일 답장에 씁니다.</div>
+    </div>
+    <div class="card">
+      <div class="k">Google Calendar</div>
+      <div class="v">일정을 <b>보고 잡습니다.</b>
+        상담 주간 일정 짜기, 행사 일정 확인.</div>
+    </div>
+    <div class="card">
+      <div class="k">Notion</div>
+      <div class="v">연수에서 만드신 <b>학급 업무 표를 클로드가 직접 읽습니다.</b>
+        노션 파트와 클로드 파트가 여기서 만납니다.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1.5em">Google Drive — 이렇게 쳐보세요</h3>
+  <div class="prompt">내 드라이브에서 '2학기 학년 교육과정' 문서 찾아서,
+9월에 해당하는 부분만 요약해줘.
+
+그리고 그걸 바탕으로 이번 주 주간학습안내 초안을 만들어줘.</div>
+
+  <h3>Gmail</h3>
+  <div class="prompt">이번 주에 학부모님께 받은 메일 중에
+답장을 아직 안 한 게 있는지 찾아줘.
+
+각각 무슨 내용인지 한 줄로 요약하고,
+급한 순서대로 정렬해줘.</div>
+  <p class="note"><b>답장을 바로 보내게 하지 마세요.</b> 초안까지만 받고 <b>보내기는 직접</b> 하세요.
+    학부모 답장은 한 문장이 크게 번집니다.</p>
+
+  <h3>Google Calendar</h3>
+  <div class="prompt">다음 주 상담 주간이야.
+내 캘린더에서 비어 있는 시간을 찾아서
+학부모 상담 20분씩 들어갈 수 있는 자리를 표로 만들어줘.
+
+오후 1시~4시 30분 사이로, 사이에 10분씩 쉬는 시간 넣어서.</div>
+
+  <h3>Notion</h3>
+  <div class="prompt">내 노션의 '학급 업무' 표에서
+이번 주 마감인 것만 알려줘.
+
+그리고 각각 뭐부터 하면 좋을지 순서를 정해줘.</div>
+</section>
+
+<section>
+  <h2>권한 — 여기가 제일 중요합니다</h2>
+  <p class="h2note">연결 화면에서 무심코 “전체 허용”을 누르면 되돌리기 번거롭습니다.</p>
+
+  <div class="warn">
+    <h3>필요한 것만 여세요</h3>
+    <ul>
+      <li><b>노션</b>은 연결할 때 <b>어느 페이지를 보여줄지 직접 고를 수 있습니다.</b>
+        전체를 열지 말고 <b>업무용 페이지만</b> 고르세요</li>
+      <li><b>드라이브</b>에 학생 실명 자료가 있다면, 그 폴더가 포함되는지 확인하세요</li>
+      <li>커넥터는 <b>내 권한을 그대로 물려받습니다.</b> 내가 볼 수 있는 건 클로드도 봅니다</li>
+      <li>연결은 언제든 끊을 수 있습니다 — <b>Customize → Connectors</b> 에서 해당 서비스를 선택</li>
+    </ul>
+  </div>
+
+  <div class="warn">
+    <h3>쓰기 권한은 한 번 더 생각하세요</h3>
+    <ul>
+      <li>읽기만 필요한 일에 <b>수정·삭제 권한</b>까지 줄 필요는 없습니다</li>
+      <li>메일은 <b>초안까지만.</b> 발송은 직접 하세요</li>
+      <li>캘린더도 <b>일정 제안까지만</b> 받고 확정은 직접 하시는 편이 안전합니다</li>
+    </ul>
+  </div>
+
+  <p class="note">연수에서 배운 원칙은 여기서도 같습니다.
+    <b>학생 실명·생년월일이 든 자료는 클로드가 닿는 범위에 두지 않습니다.</b></p>
+</section>
+
+<section>
+  <h2>스킬 · 커넥터 · 코워크 — 뭐가 다른가</h2>
+  <p class="h2note">이름이 비슷해 헷갈립니다. 하는 일이 다릅니다.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th></th><th>무엇을</th><th>비유</th><th>무료?</th></tr></thead>
+      <tbody>
+        <tr><td><b>스킬</b></td><td>이 일은 이렇게 한다 <span class="mut">(절차)</span></td><td>업무 매뉴얼</td><td>내장 ○ / 직접 만들기는 유료</td></tr>
+        <tr><td><b>프로젝트</b></td><td>나는 누구인가 <span class="mut">(배경)</span></td><td>우리 반 서류철</td><td class="yes">5개까지</td></tr>
+        <tr><td><b>커넥터</b></td><td>내 도구에 손 뻗기</td><td><b>열쇠 꾸러미</b></td><td class="yes">됩니다</td></tr>
+        <tr><td><b>코워크</b></td><td>혼자 일하기</td><td>맡겨두고 퇴근</td><td class="no">유료</td></tr>
+        <tr><td><b>플러그인</b></td><td>여럿을 한 묶음으로</td><td>봉투</td><td class="no">유료</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="kicker">커넥터는 이 중 <b>무료로 되면서 가장 크게 달라지는</b> 것입니다. 먼저 해보세요.</p>
+</section>
+
+<footer>
+  <h2>오늘 하나만 하신다면</h2>
+  <p><b>구글 드라이브를 연결해 보세요.</b> 5분이면 됩니다.
+    그리고 “내 드라이브에서 ○○ 찾아줘”라고 한 번 시켜보세요.
+    파일을 올리지 않아도 된다는 게 어떤 느낌인지 바로 아시게 됩니다.</p>
+  <p class="note">막히시면 연락 주세요. 혼자 하다 막히면 그냥 안 하게 됩니다.</p>
+  <p class="sign"><span>회색 상자는 클릭하면 복사됩니다</span><span>2026년 9월 기준 · 공식 문서 확인</span></p>
+</footer>
+
+</div>
+<script>
+(function () {
+  /* 프롬프트 클릭 복사 */
+  function fallback(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:-2000px;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function copy(el) {
+    var text = el.textContent;
+    var done = function () {
+      el.classList.add('copied');
+      setTimeout(function () { el.classList.remove('copied'); }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(text, done); });
+    } else { fallback(text, done); }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.prompt'), function (el) {
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('title', '클릭하면 복사됩니다');
+    el.addEventListener('click', function () { copy(el); });
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(el); }
+    });
+  });
+
+  /* 탭 — 형제 파일이 없는 곳(아티팩트)에서는 절대 주소로 */
+  if (location.protocol === 'file:') return;
+  var alts = Array.prototype.slice.call(document.querySelectorAll('.tabs a[data-alt]'));
+  if (!alts.length) return;
+  var swap = function () {
+    alts.forEach(function (a) { a.setAttribute('href', a.getAttribute('data-alt')); });
+  };
+  try {
+    fetch(alts[0].getAttribute('href'), { method: 'HEAD' })
+      .then(function (r) { if (!r.ok) swap(); }, swap);
+  } catch (e) { swap(); }
+})();
+</script>

@@ -1,0 +1,13 @@
+{
+  "name": "teach",
+  "owner": {
+    "name": "이현기"
+  },
+  "plugins": [
+    {
+      "name": "teacher-pack",
+      "source": "./plugins/teacher-pack",
+      "description": "초등교사 업무용 스킬 10종"
+    }
+  ]
+}
