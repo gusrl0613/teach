@@ -7,7 +7,8 @@
     {
       "name": "teacher-pack",
       "source": "./plugins/teacher-pack",
-      "description": "초등교사 업무용 스킬 10종"
+      "description": "초등교사 업무용 스킬 10종",
+      "sha256_note": "361afeb52d1a4d97c6dc096a4e61dcd091a61f2256b16feef9f890a941d75d61"
     }
   ]
 }

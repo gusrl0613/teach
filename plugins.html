@@ -156,6 +156,16 @@ kbd {
   padding: .1em .4em; background: var(--surface); color: var(--ink);
 }
 
+.dl {
+  display: inline-block;
+  font-weight: 600; font-size: 15px;
+  padding: 9px 18px;
+  background: var(--ink); color: var(--on-ink);
+  border-radius: 3px; text-decoration: none;
+}
+.dl:hover { opacity: .88; }
+.dl.dead { background: var(--raised); color: var(--ink-3); cursor: not-allowed; pointer-events: none; }
+
 footer { padding: clamp(30px, 5vw, 52px) 0 clamp(46px, 7vw, 76px); }
 .sign {
   margin-top: clamp(26px, 4vw, 42px); padding-top: 18px;
@@ -317,8 +327,40 @@ footer { padding: clamp(30px, 5vw, 52px) 0 clamp(46px, 7vw, 76px); }
   <div class="prompt">/plugin install teacher-pack@teach</div>
   <p>설치되면 스킬은 <code>/teacher-pack:home-letter</code> 처럼 <b>플러그인 이름이 앞에 붙습니다.</b>
     이름이 겹치는 걸 막기 위해서입니다. 물론 이름을 안 부르고 그냥 “가정통신문 써줘”라고 해도 알아서 불려옵니다.</p>
-  <p class="note">저장소가 <b>비공개</b>라 접근 권한이 있어야 설치됩니다.
-    다른 선생님께 나눠주시려면 저장소를 공개로 바꾸시거나, 협업자로 추가하시면 됩니다.</p>
+  <p class="note">이 방법은 <b>저장소에 접근할 수 있어야</b> 합니다.
+    비공개 저장소라도 <code>gh auth login</code> 등으로 깃 자격증명이 잡혀 있으면 그대로 설치됩니다.
+    없으시면 아래 <b>zip 방법</b>을 쓰세요.</p>
+</section>
+
+<section>
+  <h2>zip 파일로 설치하기 — 깃 없이</h2>
+  <p class="h2note">저장소 권한도, 깃도 필요 없습니다. 파일 하나면 됩니다.</p>
+
+  <p><a class="dl" href="teacher-pack.zip" download>teacher-pack.zip 내려받기</a>
+    <span class="mut">약 24 KB · 스킬 10종</span></p>
+
+  <p style="margin-top:1.1em">내려받은 뒤, 그 파일이 있는 폴더에서 클로드 코드를 이렇게 엽니다.</p>
+  <div class="prompt">claude --plugin-dir teacher-pack.zip</div>
+  <p>그 세션에서 스킬 10종이 그대로 뜹니다. <b>압축을 풀지 마세요.</b> zip 그대로 넘깁니다.</p>
+
+  <h3 style="margin-top:1.4em">여러 선생님께 나눠줄 때</h3>
+  <p>zip을 웹에 올려두면 <b>주소만 알려드리면</b> 됩니다. 받는 쪽은 이 한 줄이면 끝입니다.</p>
+  <div class="prompt">claude --plugin-url https://여기에-배포주소/teacher-pack.zip</div>
+  <p class="mut">※ <code>여기에-배포주소</code> 부분은 이 사이트가 올라간 실제 주소로 바꿔 쓰세요.</p>
+  <p class="note">마켓플레이스 카탈로그에 <code>archive</code> 소스로 등록해두면
+    <code>/plugin install</code> 로도 설치됩니다. 이 방식은 <b>클로드 코드 v2.1.224 이상</b>이 필요하고,
+    아카이브는 <b>256 MiB</b>까지입니다. 무결성 확인용 sha256 값은 저장소의
+    <code>teacher-pack.zip.sha256</code> 에 있습니다.</p>
+
+  <div class="warn">
+    <h3>직접 테스트하지 못했습니다</h3>
+    <ul>
+      <li>이 zip은 <b>공식 문서의 규격에 맞춰 만들고 구조를 검증</b>했습니다 —
+        <code>.claude-plugin/plugin.json</code> 이 최상단에 있고 스킬 10종이 들어 있습니다</li>
+      <li>다만 <b>클로드 코드를 실제로 띄워 설치까지 해보지는 못했습니다.</b>
+        처음 쓰실 때 안 되면 알려주세요</li>
+    </ul>
+  </div>
 </section>
 
 <section>
@@ -394,6 +436,23 @@ footer { padding: clamp(30px, 5vw, 52px) 0 clamp(46px, 7vw, 76px); }
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(el); }
     });
   });
+
+  /* 내려받기 — 막힌 화면(아티팩트)에서는 죽은 링크를 남기지 않는다 */
+  var dls = Array.prototype.slice.call(document.querySelectorAll('.dl[download]'));
+  if (dls.length && location.protocol !== 'file:') {
+    var killDl = function () {
+      dls.forEach(function (a) {
+        a.classList.add('dead');
+        a.removeAttribute('href');
+        a.removeAttribute('download');
+        a.textContent = '이 화면에서는 내려받기가 막혀 있습니다';
+      });
+    };
+    try {
+      fetch(dls[0].getAttribute('href'), { method: 'HEAD' })
+        .then(function (r) { if (!r.ok) killDl(); }, killDl);
+    } catch (e) { killDl(); }
+  }
 
   /* 탭 — 형제 파일이 없는 곳(아티팩트)에서는 절대 주소로 */
   if (location.protocol === 'file:') return;

@@ -156,6 +156,16 @@ kbd {
   padding: .1em .4em; background: var(--surface); color: var(--ink);
 }
 
+.dl {
+  display: inline-block;
+  font-weight: 600; font-size: 15px;
+  padding: 9px 18px;
+  background: var(--ink); color: var(--on-ink);
+  border-radius: 3px; text-decoration: none;
+}
+.dl:hover { opacity: .88; }
+.dl.dead { background: var(--raised); color: var(--ink-3); cursor: not-allowed; pointer-events: none; }
+
 footer { padding: clamp(30px, 5vw, 52px) 0 clamp(46px, 7vw, 76px); }
 .sign {
   margin-top: clamp(26px, 4vw, 42px); padding-top: 18px;
@@ -407,6 +417,23 @@ footer { padding: clamp(30px, 5vw, 52px) 0 clamp(46px, 7vw, 76px); }
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(el); }
     });
   });
+
+  /* 내려받기 — 막힌 화면(아티팩트)에서는 죽은 링크를 남기지 않는다 */
+  var dls = Array.prototype.slice.call(document.querySelectorAll('.dl[download]'));
+  if (dls.length && location.protocol !== 'file:') {
+    var killDl = function () {
+      dls.forEach(function (a) {
+        a.classList.add('dead');
+        a.removeAttribute('href');
+        a.removeAttribute('download');
+        a.textContent = '이 화면에서는 내려받기가 막혀 있습니다';
+      });
+    };
+    try {
+      fetch(dls[0].getAttribute('href'), { method: 'HEAD' })
+        .then(function (r) { if (!r.ok) killDl(); }, killDl);
+    } catch (e) { killDl(); }
+  }
 
   /* 탭 — 형제 파일이 없는 곳(아티팩트)에서는 절대 주소로 */
   if (location.protocol === 'file:') return;
