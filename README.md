@@ -61,7 +61,10 @@ Vercel 정적 배포용 저장소. 루트가 그대로 서빙된다.
 - `.claude-plugin/marketplace.json` — 마켓플레이스 카탈로그
 - `plugins/teacher-pack/` — 플러그인 본체 (`plugin.json` + 스킬 10종)
 
-저장소가 비공개라 접근 권한이 있어야 설치된다.
+저장소가 공개라 **깃허브 계정 없이 누구나** 설치된다.
+깃이 없거나 파일로 건네야 하면 `teacher-pack.zip` 을 쓴다 —
+`claude --plugin-dir teacher-pack.zip` 또는
+`claude --plugin-url https://raw.githubusercontent.com/gusrl0613/teach/main/teacher-pack.zip`
 
 ## 원본
 
